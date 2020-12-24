@@ -2,7 +2,7 @@ from django.contrib import admin
 
 from recipes.models import Unit, Tag, Ingredient, Recipe
 
-
+# TODO: Adjust admin
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
     list_display = ('id', 'title', 'description', 'slug')
@@ -31,14 +31,8 @@ class UnitAdmin(admin.ModelAdmin):
 class UnitAdmin(admin.ModelAdmin):
     list_display = (
         'id',
-        'author',
         'title',
-        'description',
-        'image',
-        'ingredients',
         'tag',
-        'cooking_time',
-        'time_type',
         'slug'
     )
     prepopulated_fields = {"slug": ("title",)}

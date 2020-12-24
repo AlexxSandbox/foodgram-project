@@ -105,7 +105,7 @@ class Follow(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='follows',
+        related_name='followings',
         null=True,
         verbose_name='Подписчик',
         help_text='Автор подписки'
@@ -113,7 +113,7 @@ class Follow(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='follows',
+        related_name='followers',
         null=True,
         verbose_name='Подписан на',
         help_text='Объект подписки'
@@ -129,15 +129,14 @@ class Favorite(models.Model):
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='favorites',
         null=True,
         verbose_name='Подписчик',
+        related_name='favorites',
         help_text='автор избранного'
     )
     recipe = models.ForeignKey(
         Recipe,
         on_delete=models.CASCADE,
-        related_name='favorites',
         null=True,
         verbose_name='Подписан на',
         help_text='Рецепты в избранном'
