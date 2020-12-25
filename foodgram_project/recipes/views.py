@@ -11,4 +11,4 @@ def index(request):
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
-    return render(request, 'base.html', {'page': page, 'paginator': paginator})
+    return render(request, 'indexNotAuth.html', {'page': page, 'paginator': paginator})
