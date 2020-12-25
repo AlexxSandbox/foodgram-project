@@ -1,40 +1,69 @@
 from django.contrib import admin
+from django.utils.safestring import mark_safe
 
-from recipes.models import Unit, Tag, Ingredient, Recipe
+from recipes.models import Unit, Tag, Ingredient, Recipe, Counts
 
-# TODO: Adjust admin
+
+admin.site.site_header = "FOODgram Admin"
+admin.site.site_title = "FOODgram Admin Portal"
+admin.site.index_title = "Welcome to most delicious portal - FOODgram"
+
+
+class CountsInstanceInLine(admin.TabularInline):
+    model = Counts
+    extra = 1
+
+
 @admin.register(Unit)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'slug')
+    list_display = ('title',)
     prepopulated_fields = {"slug": ("title",)}
-    search_fields = ('title', )
+    search_fields = ('title',)
     empty_value_display = '-пусто-'
 
 
 @admin.register(Tag)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'slug')
+    list_display = ('title',)
     prepopulated_fields = {"slug": ("title",)}
-    search_fields = ('title', )
+    search_fields = ('title',)
     empty_value_display = '-пусто-'
 
 
 @admin.register(Ingredient)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = ('id', 'title', 'description', 'unit', 'image', 'slug')
+    list_display = ('title',)
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('title', 'description')
     empty_value_display = '-пусто-'
+    readonly_fields = ('headshot_image',)
+    save_on_top = True
+
+    # TODO: Dont work image
+    def headshot_image(self, obj):
+        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
+            url=obj.image.url,
+            width=200,
+            height=200,
+        )
+    )
 
 
 @admin.register(Recipe)
 class UnitAdmin(admin.ModelAdmin):
-    list_display = (
-        'id',
-        'title',
-        'tag',
-        'slug'
-    )
+    list_display = ('title', 'tag')
     prepopulated_fields = {"slug": ("title",)}
     search_fields = ('title', 'description', 'author', 'ingredients')
     empty_value_display = '-пусто-'
+    inlines = [CountsInstanceInLine]
+    readonly_fields = ('headshot_image',)
+    save_on_top = True
+
+    #TODO: Dont work image
+    def headshot_image(self, obj):
+        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
+            url = obj.image.url,
+            width=200,
+            height=200,
+            )
+    )

@@ -64,6 +64,7 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
+    # TODO: Add draft boolfield
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -111,6 +112,10 @@ class Counts(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField('Количество', default=0)
+
+    class Meta:
+        verbose_name = 'Состав рецепта'
+        verbose_name_plural = 'Состав рецепта'
 
 
 class Follow(models.Model):
