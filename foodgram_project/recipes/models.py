@@ -14,7 +14,7 @@ class CookingTime(models.TextChoices):
 class Unit(models.Model):
     title = models.CharField('Единицы измерения', max_length=30, unique=True)
     description = models.CharField('Описание е/изм', max_length=250, blank=True, default='')
-    slug = models.SlugField(unique=True)  # TODO: add prepopulated field for slug in Admin panel
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Единица измерения'
@@ -28,7 +28,7 @@ class Unit(models.Model):
 class Tag(models.Model):
     title = models.CharField('Тэг', max_length=30, unique=True)
     description = models.CharField('Описание тэга', max_length=250, blank=True, default='')
-    slug = models.SlugField(unique=True) # TODO: add prepopulated field for slug in Admin panel
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Тэг'
@@ -42,8 +42,6 @@ class Tag(models.Model):
 class Ingredient(models.Model):
     title = models.CharField('Ингредиент', max_length=150, unique=True)
     description = models.TextField('Описание ингредиента', blank=True, default='')
-    # TODO: quantity what?
-    quantity = models.PositiveSmallIntegerField('Количество', default=0)
     unit = models.ForeignKey(
         Unit,
         on_delete=models.SET_NULL,
@@ -54,7 +52,7 @@ class Ingredient(models.Model):
     )
     # TODO: need test method to auto create filename
     image = models.ImageField(upload_to='ingredients/', blank=True, verbose_name='Изображение')
-    slug = models.SlugField(unique=True) # TODO: add prepopulated field for slug in Admin panel
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Ингредиент'
@@ -66,12 +64,20 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    author = models.ForeignKey(User, on_delete=models.CASCADE, related_name='recipes', verbose_name='Автор')
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='recipes',
+        verbose_name='Автор'
+    )
     title = models.CharField('Название', max_length=250, unique=True)
     description = models.TextField('Описание рецепта')
-    # TODO: need test method to auto create filename
     image = models.ImageField(upload_to='recipes/', verbose_name='Изображение')
-    ingredients = models.ManyToManyField(Ingredient, verbose_name='Игредиенты', related_name='ingredients')
+    ingredients = models.ManyToManyField(
+        Ingredient,
+        verbose_name='Игредиенты',
+        through='Counts'
+    )
     tag = models.ForeignKey(
         Tag,
         on_delete=models.SET_NULL,
@@ -87,7 +93,7 @@ class Recipe(models.Model):
         choices=CookingTime.choices,
         default=CookingTime.MINUTE
     )
-    slug = models.SlugField(unique=True) # TODO: add prepopulated field for slug in Admin panel
+    slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Рецепт'
@@ -99,6 +105,12 @@ class Recipe(models.Model):
 
     def get_absolute_url(self):
         return reverse('recipe_detail', kwargs={'slug': self.slug})
+
+
+class Counts(models.Model):
+    recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    quantity = models.PositiveSmallIntegerField('Количество', default=0)
 
 
 class Follow(models.Model):
