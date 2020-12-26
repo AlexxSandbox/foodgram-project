@@ -1,9 +1,18 @@
 import os
+import re
 
 from django.db import models
+from pytils.translit import slugify
 from django.urls import reverse
 
 from users.models import User
+
+
+def get_upload_path(instance, filename):
+    path = f'{instance.__class__.__name__}/'
+    t = re.search('\.(.+)$', filename).group(1)
+    filename = f'{str(instance.slug)}.{t}'
+    return os.path.join(path, filename)
 
 
 class CookingTime(models.TextChoices):
@@ -13,7 +22,7 @@ class CookingTime(models.TextChoices):
 
 class Unit(models.Model):
     title = models.CharField('Единицы измерения', max_length=30, unique=True)
-    description = models.CharField('Описание е/изм', max_length=250, blank=True, default='')
+    description = models.CharField('Описание', max_length=250, blank=True, default='')
     slug = models.SlugField(unique=True)
 
     class Meta:
@@ -23,6 +32,10 @@ class Unit(models.Model):
 
     def __str__(self):
         return self.title
+    
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Unit, self).save(*args, **kwargs)
 
 
 class Tag(models.Model):
@@ -38,20 +51,22 @@ class Tag(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Tag, self).save(*args, **kwargs)
+
 
 class Ingredient(models.Model):
     title = models.CharField('Ингредиент', max_length=150, unique=True)
     description = models.TextField('Описание ингредиента', blank=True, default='')
     unit = models.ForeignKey(
         Unit,
-        on_delete=models.SET_NULL,
+        on_delete=models.SET_DEFAULT,
         verbose_name='Единица измерения',
         related_name='ingredients',
-        blank=True,
-        null=True,
+        default=''
     )
-    # TODO: need test method to auto create filename
-    image = models.ImageField(upload_to='ingredients/', blank=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to=get_upload_path, blank=True, verbose_name='Изображение')
     slug = models.SlugField(unique=True)
 
     class Meta:
@@ -62,9 +77,12 @@ class Ingredient(models.Model):
     def __str__(self):
         return self.title
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Ingredient, self).save(*args, **kwargs)
+
 
 class Recipe(models.Model):
-    # TODO: Add draft boolfield
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -73,7 +91,7 @@ class Recipe(models.Model):
     )
     title = models.CharField('Название', max_length=250, unique=True)
     description = models.TextField('Описание рецепта')
-    image = models.ImageField(upload_to='recipes/', verbose_name='Изображение')
+    image = models.ImageField(upload_to=get_upload_path, verbose_name='Изображение')
     ingredients = models.ManyToManyField(
         Ingredient,
         verbose_name='Игредиенты',
@@ -87,7 +105,7 @@ class Recipe(models.Model):
         blank=True,
         null=True
     )
-    cooking_time = models.PositiveSmallIntegerField('Время приготовления')
+    cooking_time = models.PositiveSmallIntegerField('Время приготовления', default=0)
     time_type = models.CharField(
         'Единица времени',
         max_length=10,
@@ -95,6 +113,7 @@ class Recipe(models.Model):
         default=CookingTime.MINUTE
     )
     slug = models.SlugField(unique=True)
+    draft = models.BooleanField('Черновик', default=True)
 
     class Meta:
         verbose_name = 'Рецепт'
@@ -107,10 +126,14 @@ class Recipe(models.Model):
     def get_absolute_url(self):
         return reverse('recipe_detail', kwargs={'slug': self.slug})
 
+    def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
+        super(Recipe, self).save(*args, **kwargs)
+
 
 class Counts(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, verbose_name='Ингредиенты')
     quantity = models.PositiveSmallIntegerField('Количество', default=0)
 
     class Meta:
@@ -163,10 +186,3 @@ class Favorite(models.Model):
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
         unique_together = ('user', 'recipe')
-
-
-# TODO: create method to generate filename
-def get_upload_path(instance, filename):
-    path = 'recipes/'
-    filename = f'{instance.title}_{instance.id}'
-    return os.path.join(path, filename)
