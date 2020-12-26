@@ -1,7 +1,7 @@
 
 class Api {
     constructor(apiUrl) {
-        this.apiUrl =  'https://127.0.0.1:8000';
+        this.apiUrl =  apiUrl;
     }
   getPurchases () {
     return fetch(`/purchases`, {
