@@ -1,4 +1,5 @@
 <!doctype html>
+{% load static %}
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -6,16 +7,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Создание рецепта</title>
-    <link rel="stylesheet" href="./pages/form.css">
+    <link rel="stylesheet" href="/static/pages/form.css">
 </head>
 <body class="body">
 <header class="header">
     <nav class="nav">
         <div class="nav__container container">
             <ul class="nav__items list">
-                <li class="nav__item"><a href="#" class="nav__link link">Рецепты</a></li>
+                <li class="nav__item"><a href="{% url 'home' %}" class="nav__link link">Рецепты</a></li>
                 <li class="nav__item"><a href="#" class="nav__link link">Мои подписки</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Создать рецепт</a></li>
+                <li class="nav__item"><a href="{% url 'recipe_new' %}" class="nav__link link">Создать рецепт</a></li>
                 <li class="nav__item"><a href="#" class="nav__link link">Избранное</a></li>
                 <li class="nav__item"><a href="#" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter"></span></li>
 
@@ -117,10 +118,10 @@
         </ul>
     </div>
 </footer>
-<script src="./js/config/config.js"></script>
-<script src="./js/components/Header.js"></script>
-<script src="./js/utils/debouncing.js"></script>
-<script src="./js/api/Api.js"></script>
-<script src="formRecipe.js"></script>
+<script src="/static/js/config/config.js"></script>
+<script src="/static/js/components/Header.js"></script>
+<script src="/static/js/utils/debouncing.js"></script>
+<script src="/static/js/api/Api.js"></script>
+<script src="/static/formRecipe.js"></script>
 </body>
 </html>

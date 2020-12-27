@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 
-from recipes.models import Unit, Tag, Ingredient, Recipe, Counts
+from recipes.models import Unit, Tag, Ingredient, Recipe, RecipeIngredients
 
 
 admin.site.site_header = "FOODgram Admin"
@@ -9,8 +9,8 @@ admin.site.site_title = "FOODgram Admin Portal"
 admin.site.index_title = "Welcome to most delicious portal - FOODgram"
 
 
-class CountsInstanceInLine(admin.TabularInline):
-    model = Counts
+class RecipeIngredientsInstanceInLine(admin.TabularInline):
+    model = RecipeIngredients
     extra = 0
 
 
@@ -59,13 +59,13 @@ class RecipeAdmin(admin.ModelAdmin):
         'description',
         'headshot_image',
         'image',
-        ('cooking_time', 'time_type'),
+        'cooking_time',
         'draft',
         'slug'
     )
     search_fields = ('title', 'description', 'author', 'ingredients')
     empty_value_display = '-пусто-'
-    inlines = [CountsInstanceInLine]
+    inlines = [RecipeIngredientsInstanceInLine]
     readonly_fields = ('headshot_image', 'slug')
     save_on_top = True
 

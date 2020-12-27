@@ -9,30 +9,29 @@ from users.models import User
 
 
 def get_upload_path(instance, filename):
+    """
+    generate filename by title and class name
+    """
     path = f'{instance.__class__.__name__}/'
     t = re.search('\.(.+)$', filename).group(1)
     filename = f'{str(instance.slug)}.{t}'
     return os.path.join(path, filename)
 
 
-class CookingTime(models.TextChoices):
-    HOUR = 'hours'
-    MINUTE = 'minutes'
-
-
 class Unit(models.Model):
     title = models.CharField('Единицы измерения', max_length=30, unique=True)
-    description = models.CharField('Описание', max_length=250, blank=True, default='')
+    description = models.CharField('Описание', max_length=250, blank=True,
+                                   default='')
     slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Единица измерения'
         verbose_name_plural = 'Единицы измерения'
-        ordering = ['title',]
+        ordering = ['title', ]
 
     def __str__(self):
         return self.title
-    
+
     def save(self, *args, **kwargs):
         self.slug = slugify(self.title)
         super(Unit, self).save(*args, **kwargs)
@@ -40,13 +39,14 @@ class Unit(models.Model):
 
 class Tag(models.Model):
     title = models.CharField('Тэг', max_length=30, unique=True)
-    description = models.CharField('Описание тэга', max_length=250, blank=True, default='')
+    description = models.CharField('Описание тэга', max_length=250, blank=True,
+                                   default='')
     slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Тэг'
         verbose_name_plural = 'Тэги'
-        ordering = ['title',]
+        ordering = ['title', ]
 
     def __str__(self):
         return self.title
@@ -58,7 +58,8 @@ class Tag(models.Model):
 
 class Ingredient(models.Model):
     title = models.CharField('Ингредиент', max_length=150, unique=True)
-    description = models.TextField('Описание ингредиента', blank=True, default='')
+    description = models.TextField('Описание ингредиента', blank=True,
+                                   default='')
     unit = models.ForeignKey(
         Unit,
         on_delete=models.SET_DEFAULT,
@@ -66,13 +67,14 @@ class Ingredient(models.Model):
         related_name='ingredients',
         default=''
     )
-    image = models.ImageField(upload_to=get_upload_path, blank=True, verbose_name='Изображение')
+    image = models.ImageField(upload_to=get_upload_path, blank=True,
+                              verbose_name='Изображение')
     slug = models.SlugField(unique=True)
 
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
-        ordering = ['title',]
+        ordering = ['title', ]
 
     def __str__(self):
         return self.title
@@ -91,11 +93,12 @@ class Recipe(models.Model):
     )
     title = models.CharField('Название', max_length=250, unique=True)
     description = models.TextField('Описание рецепта')
-    image = models.ImageField(upload_to=get_upload_path, verbose_name='Изображение')
+    image = models.ImageField(upload_to=get_upload_path,
+                              verbose_name='Изображение')
     ingredients = models.ManyToManyField(
         Ingredient,
         verbose_name='Игредиенты',
-        through='Counts'
+        through='RecipeIngredients'
     )
     tag = models.ForeignKey(
         Tag,
@@ -105,12 +108,9 @@ class Recipe(models.Model):
         blank=True,
         null=True
     )
-    cooking_time = models.PositiveSmallIntegerField('Время приготовления', default=0)
-    time_type = models.CharField(
-        'Единица времени',
-        max_length=10,
-        choices=CookingTime.choices,
-        default=CookingTime.MINUTE
+    cooking_time = models.PositiveSmallIntegerField(
+        'Время приготовления, мин',
+        default=0
     )
     slug = models.SlugField(unique=True)
     draft = models.BooleanField('Черновик', default=True)
@@ -118,7 +118,7 @@ class Recipe(models.Model):
     class Meta:
         verbose_name = 'Рецепт'
         verbose_name_plural = 'Рецепты'
-        ordering = ['title',]
+        ordering = ['title', ]
 
     def __str__(self):
         return self.title
@@ -131,9 +131,9 @@ class Recipe(models.Model):
         super(Recipe, self).save(*args, **kwargs)
 
 
-class Counts(models.Model):
+class RecipeIngredients(models.Model):
     recipe = models.ForeignKey(Recipe, on_delete=models.CASCADE)
-    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE, verbose_name='Ингредиенты')
+    ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField('Количество', default=0)
 
     class Meta:
