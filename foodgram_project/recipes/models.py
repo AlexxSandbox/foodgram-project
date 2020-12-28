@@ -20,7 +20,7 @@ def get_upload_path(instance, filename):
 
 class Unit(models.Model):
     title = models.CharField('Единицы измерения', max_length=30, unique=True)
-    description = models.CharField('Описание', max_length=250, blank=True,
+    description = models.CharField('Описание', max_length=50, blank=True,
                                    default='')
     slug = models.SlugField(unique=True)
 
@@ -38,8 +38,8 @@ class Unit(models.Model):
 
 
 class Tag(models.Model):
-    title = models.CharField('Тэг', max_length=30, unique=True)
-    description = models.CharField('Описание тэга', max_length=250, blank=True,
+    title = models.CharField('Тэг', max_length=10, unique=True)
+    description = models.CharField('Описание тэга', max_length=50, blank=True,
                                    default='')
     slug = models.SlugField(unique=True)
 
@@ -91,7 +91,7 @@ class Recipe(models.Model):
         related_name='recipes',
         verbose_name='Автор'
     )
-    title = models.CharField('Название', max_length=250, unique=True)
+    title = models.CharField('Название', max_length=150, unique=True)
     description = models.TextField('Описание рецепта')
     image = models.ImageField(upload_to=get_upload_path,
                               verbose_name='Изображение')
@@ -100,13 +100,10 @@ class Recipe(models.Model):
         verbose_name='Игредиенты',
         through='RecipeIngredients'
     )
-    tag = models.ForeignKey(
+    tag = models.ManyToManyField(
         Tag,
-        on_delete=models.SET_NULL,
         verbose_name='Таг',
-        related_name='recipes',
-        blank=True,
-        null=True
+        related_name='recipes'
     )
     cooking_time = models.PositiveSmallIntegerField(
         'Время приготовления, мин',
