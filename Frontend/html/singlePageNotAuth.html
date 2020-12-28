@@ -30,12 +30,17 @@
             <div class="single-card__info">
                 <div class="single-card__header-info">
                     <h1 class="single-card__title">{{ recipe.title }}</h1>
-
                 </div>
                 <ul class="single-card__items">
-                    <li class="single-card__item"><span class="badge badge_style_green">Обед</span></li>
-                    <li class="single-card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                    <li class="single-card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                    {% for tag in recipe.tags.all %}
+                        {% if tag.title == 'обед' %}
+                            <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
+                        {% elif tag.title == 'завтрак' %}
+                            <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
+                        {% elif tag.title == 'ужин' %}
+                            <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
                 <div class="single-card__items single-card__items_column">
                     <p class="single-card__text"><span class="icon-time"></span>{{ recipe.cooking_time }} мин.</p>

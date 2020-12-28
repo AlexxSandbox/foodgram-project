@@ -13,18 +13,28 @@
 <header class="header">
     <nav class="nav">
         <div class="nav__container container">
+            {% if user.is_authenticated %}
             <ul class="nav__items list">
                 <li class="nav__item nav__item_active"><a href="{% url 'home' %}" class="nav__link link">Рецепты</a></li>
                 <li class="nav__item"><a href="#" class="nav__link link">Мои подписки</a></li>
                 <li class="nav__item"><a href="{% url 'recipe_new' %}" class="nav__link link">Создать рецепт</a></li>
                 <li class="nav__item"><a href="#" class="nav__link link">Избранное</a></li>
                 <li class="nav__item"><a href="#" class="nav__link link">Список покупок</a><span class="badge badge_style_blue nav__badge" id="counter">4</span></li>
-
             </ul>
             <ul class="nav__items list">
                 <li class="nav__item"><a href="{% url 'password_reset% }" class="nav__link link">Изменить пароль</a></li>
                 <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
             </ul>
+            {% else %}
+            <ul class="nav__items list">
+                <li class="nav__item nav__item_active"><a href="{% url 'home' %}" class="nav__link link">Рецепты</a></li>
+                <li class="nav__item"><a href="#" class="nav__link link">Список покупок</a><span class="badge badge_style_blue nav__badge" id="counter">4</span></li>
+            </ul>
+            <ul class="nav__items list">
+                <li class="nav__item"><a href="{% url 'login' %}" class="nav__link link">Войти</a></li>
+                <li class="nav__item"><a href="{% url 'signup' %}" class="button button_style_blue">Создать аккаунт</a></li>
+            </ul>
+            {% endif %}
         </div>
     </nav>
 </header>
@@ -40,9 +50,15 @@
                     </div>
                 </div>
                 <ul class="single-card__items">
-                    <li class="single-card__item"><span class="badge badge_style_green">Обед</span></li>
-                    <li class="single-card__item"><span class="badge badge_style_orange">Завтрак</span></li>
-                    <li class="single-card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                    {% for tag in recipe.tags.all %}
+                        {% if tag.title == 'обед' %}
+                            <li class="card__item"><span class="badge badge_style_green">Обед</span></li>
+                        {% elif tag.title == 'завтрак' %}
+                            <li class="card__item"><span class="badge badge_style_orange">Завтрак</span></li>
+                        {% elif tag.title == 'ужин' %}
+                            <li class="card__item"><span class="badge badge_style_purple">Ужин</span></li>
+                        {% endif %}
+                    {% endfor %}
                 </ul>
                 <div class="single-card__items single-card__items_column">
                     <p class="single-card__text"><span class="icon-time"></span>{{ recipe.cooking_time }} мин.</p>
@@ -89,11 +105,9 @@
 <script src="/static/js/components/Favorites.js"></script>
 <script src="/static/js/components/Subscribe.js"></script>
 <script src="/static/js/config/config.js"></script>
-
 <script src="/static/js/components/MainCards.js"></script>
 <script src="/static/js/components/SingleCard.js"></script>
 <script src="/static/js/components/Header.js"></script>
-
 <script src="/static/js/api/Api.js"></script>
 <script src="/static/singlePage.js"></script>
 </body>
