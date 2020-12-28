@@ -52,9 +52,10 @@ class IngredientAdmin(admin.ModelAdmin):
 
 @admin.register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
-    list_display = ('title', 'tag')
+    list_display = ('title', 'get_tags')
     fields = (
-        ('title', 'tag'),
+        'title',
+        'tags',
         'author',
         'description',
         'headshot_image',
@@ -76,3 +77,6 @@ class RecipeAdmin(admin.ModelAdmin):
             height=200,
             )
         )
+
+    def get_tags(self, obj):
+        return ', '.join([p.title for p in obj.tags.all()])
