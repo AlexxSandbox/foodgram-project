@@ -23,7 +23,7 @@
             </ul>
             <ul class="nav__items list">
                 <li class="nav__item"><a href="#" class="nav__link link">Изменить пароль</a></li>
-                <li class="nav__item"><a href="#" class="nav__link link">Выход</a></li>
+                <li class="nav__item"><a href="{% url 'logout' %}" class="nav__link link">Выход</a></li>
             </ul>
         </div>
     </nav>
@@ -34,6 +34,7 @@
     </div>
     <div class="form-container">
         <form class="form" method="post" enctype="multipart/form-data">
+            {% csrf_token %}
             <div class="form__group">
                 <label for="id_name" class="form__label">Название рецепта</label>
                 <div class="form__field-group">
