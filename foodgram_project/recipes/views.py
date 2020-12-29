@@ -12,7 +12,7 @@ def recipe_list(request):
     paginator = Paginator(recipe_list, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'index.html', {'page': page, 'paginator': paginator})
+    return render(request, 'index.html', {'page': page, 'paginator': paginator, 'index': True})
 
 
 def tag_recipes(request, slug):
@@ -21,7 +21,7 @@ def tag_recipes(request, slug):
     paginator = Paginator(recipe_list, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
-    return render(request, 'index.html', {'page': page, 'paginator': paginator})
+    return render(request, 'index.html', {'page': page, 'paginator': paginator,'index': True})
 
 
 def recipe_detail(request, slug):
