@@ -9,7 +9,7 @@ from recipes.models import Recipe, Tag
 
 def recipe_list(request):
     recipe_list = Recipe.objects.filter(draft=False)
-    paginator = Paginator(recipe_list, 1)
+    paginator = Paginator(recipe_list, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     return render(request, 'index.html', {'page': page, 'paginator': paginator})
@@ -17,13 +17,16 @@ def recipe_list(request):
 
 def tag_recipes(request, slug):
     tags = get_object_or_404(Tag, slug=slug)
-    recipes = Recipe.objects.filter(tags=tags)
-    return render(request, 'index.html', {'recipes': recipes})
+    recipe_list = Recipe.objects.filter(tags=tags)
+    paginator = Paginator(recipe_list, 3)
+    page_number = request.GET.get('page')
+    page = paginator.get_page(page_number)
+    return render(request, 'index.html', {'page': page, 'paginator': paginator})
 
 
 def recipe_detail(request, slug):
     recipe = get_object_or_404(Recipe, slug=slug)
-    return render(request, 'singlePage.html', {'recipe': recipe})
+    return render(request, 'recipes/singlePage.html', {'recipe': recipe})
 
 
 @login_required
@@ -34,7 +37,7 @@ def new_recipe(request):
         new_recipe.author = request.user
         new_recipe.save()
         return redirect('home')
-    return render(request, 'formRecipe.html', {'form': form})
+    return render(request, 'recipes/formRecipe.html', {'form': form})
 
 
 # class RecipeListView(ListView):
