@@ -1,5 +1,8 @@
 {% extends 'base.html' %}
 {% block title %} {{ author.username }} {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="/static/pages/index.css">
+{% endblock %}
 {% block content %}
     <main class="main container">
     {% include 'main_header.html' with title=author.username %}

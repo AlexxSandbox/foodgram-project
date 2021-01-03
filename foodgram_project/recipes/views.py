@@ -19,8 +19,7 @@ def recipe_list(request):
         'index.html',
         {
             'page': page,
-            'paginator': paginator,
-            'index': True
+            'paginator': paginator
         }
     )
 
@@ -37,8 +36,7 @@ def tag_recipes(request, slug):
         'index.html',
         {
             'page': page,
-            'paginator': paginator,
-            'index': True
+            'paginator': paginator
         }
     )
 
@@ -72,8 +70,7 @@ def profile(request, username):
         {
             'paginator': paginator,
             'page': page,
-            'author': author,
-            'index': True
+            'author': author
         }
     )
 

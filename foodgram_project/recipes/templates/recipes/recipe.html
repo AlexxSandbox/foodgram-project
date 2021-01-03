@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 {% block title %} {{ recipe.title }} {% endblock %}
-
+{% block style %}
+<link rel="stylesheet" href="/static/pages/single.css">
+{% endblock %}
 {% block content %}
 <main class="main container">
     <div class="single-card" data-id="{{ recipe.id }}" data-author="12">
