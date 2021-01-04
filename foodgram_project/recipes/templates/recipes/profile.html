@@ -5,10 +5,14 @@
 {% endblock %}
 {% block content %}
     <main class="main container">
-    {% include 'main_header.html' with title=author.username %}
+    {% if user.username != author.username %}
+        {% include 'main_header.html' with title=author.get_full_name %}
         <div class="author-subscribe" data-author="{{ author.id }}">
             <p style="padding: 0 0 2em 0;"><button class="button button_style_light-blue button_size_subscribe" name="subscribe" data-out>Подписаться на автора</button></p>
         </div>
+    {% else %}
+        {% include 'main_header.html' with title='Мои рецепты' %}
+    {% endif %}
         <div class="card-list">
             {% for recipe in page %}
                 {% include 'recipes/card_recipe.html' with recipe=recipe %}
