@@ -16,7 +16,7 @@ class RecipeForm(forms.ModelForm):
         }
         help_texts = {
             'title': 'Придумай название',
-            'image': 'ПРикрепи изображение',
+            'image': 'Прикрепи изображение',
             'tags': 'Укажи таг',
             'cooking_time': 'Уточни время приготовления',
             'draft': 'Отметь если это черновик'

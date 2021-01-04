@@ -8,10 +8,13 @@ from django.urls import reverse
 from users.models import User
 
 
+class RecipeTag(models.TextChoices):
+    ZAVTRAK = 'завтрак'
+    OBED = 'обед'
+    UZHIN = 'ужин'
+
+
 def get_upload_path(instance, filename):
-    """
-    generate filename by title and class name
-    """
     path = f'{instance.__class__.__name__}/'
     t = re.search('\.(.+)$', filename).group(1)
     filename = f'{str(instance.slug)}.{t}'
@@ -38,7 +41,7 @@ class Unit(models.Model):
 
 
 class Tag(models.Model):
-    title = models.CharField('Тэг', max_length=10, unique=True)
+    title = models.CharField('Тэг', max_length=10, choices=RecipeTag.choices)
     description = models.CharField('Описание тэга', max_length=50, blank=True,
                                    default='')
     slug = models.SlugField(unique=True)
