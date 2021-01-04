@@ -8,6 +8,7 @@ class UserRole(models.TextChoices):
 
 
 class User(AbstractUser):
+    # TODO: delete field
     username = models.CharField(
         'Имя пользователя',
         max_length=50,
@@ -15,6 +16,7 @@ class User(AbstractUser):
         null=True,
         unique=True
     )
+    # TODO: add error, help
     email = models.EmailField('Электронная почта', unique=True)
     bio = models.TextField('О себе', max_length=500, blank=True, null=True)
     role = models.CharField(
