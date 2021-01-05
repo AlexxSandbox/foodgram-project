@@ -9,7 +9,7 @@ from users.models import User
 
 def recipe_list(request):
     recipes = Recipe.objects.filter(draft=False)
-    paginator = Paginator(recipes, 9)
+    paginator = Paginator(recipes, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
@@ -26,7 +26,7 @@ def recipe_list(request):
 def tag_recipes(request, slug):
     tags = get_object_or_404(Tag, slug=slug)
     recipes = Recipe.objects.filter(tags=tags)
-    paginator = Paginator(recipes, 9)
+    paginator = Paginator(recipes, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
@@ -59,7 +59,7 @@ def new_recipe(request):
 def profile(request, username):
     author = get_object_or_404(User, username=username)
     recipes = author.recipes.all()
-    paginator = Paginator(recipes, 9)
+    paginator = Paginator(recipes, 3)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
 
