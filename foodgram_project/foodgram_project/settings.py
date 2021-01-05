@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'carts',
     'recipes',
     'users',
+    'about',
     'sorl.thumbnail',
     'django.contrib.admin',
     'django.contrib.auth',
