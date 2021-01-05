@@ -15,9 +15,12 @@ class RecipeForm(forms.ModelForm):
             'draft': 'Черновик'
         }
         help_texts = {
-            'title': 'Придумай название',
-            'image': 'Прикрепи изображение',
-            'tags': 'Укажи таг',
-            'cooking_time': 'Уточни время приготовления',
+            'title': 'Укажи название рецепта',
+            'image': 'Покажи как выглядит готовое блюдо',
+            'tags': 'Укажи тип рецепта',
+            'cooking_time': 'Укажи время приготовления в минутах',
             'draft': 'Отметь если это черновик'
+        }
+        widgets = {
+            'tag': forms.CheckboxSelectMultiple()
         }

@@ -2,6 +2,7 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
+from django.conf.urls import handler404, handler500
 
 
 urlpatterns = [
@@ -13,8 +14,8 @@ urlpatterns = [
 ]
 
 
-# handler404 = 'posts.views.page_not_found' # noqa
-# handler500 = 'posts.views.server_error' # noqa
+handler404 = 'recipes.views.page_not_found' # noqa
+handler500 = 'recipes.views.server_error' # noqa
 
 
 if settings.DEBUG:

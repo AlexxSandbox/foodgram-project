@@ -129,9 +129,6 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 LOGIN_URL = 'auth/login/'
 LOGIN_REDIRECT_URL = 'home'
 
-# TODO: Adjust logout.html
-# LOGOUT_REDIRECT_URL = 'home'
-
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = os.getenv('MAIL_HOST')
 EMAIL_HOST_USER = os.getenv('MAIL_USER')
@@ -141,3 +138,9 @@ EMAIL_USE_TLS = os.getenv('MAIL_TLS')
 
 SERVER_EMAIL = EMAIL_HOST_USER
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.locmem.LocMemCache',
+    }
+}

@@ -5,7 +5,7 @@
 {% endblock %}
 {% block content %}
 <main class="main container">
-    {% include 'main_header.html' with title='Все рецепты' %}
+    {% include 'main_header.html' with title='Все рецепты' template='home' %}
     <div class="card-list">
         {% for recipe in page %}
             {% include 'recipes/card_recipe.html' with recipe=recipe %}

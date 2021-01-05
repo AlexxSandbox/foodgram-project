@@ -8,7 +8,14 @@ from users.models import User
 
 
 def recipe_list(request):
-    recipes = Recipe.objects.filter(draft=False)
+    slug = request.GET.get('slug')
+
+    if slug is not None:
+        tags = get_object_or_404(Tag, slug=slug)
+        recipes = Recipe.objects.filter(draft=False, tags=tags)
+    else:
+        recipes = Recipe.objects.filter(draft=False)
+
     paginator = Paginator(recipes, 9)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -23,21 +30,21 @@ def recipe_list(request):
     )
 
 
-def tag_recipes(request, slug):
-    tags = get_object_or_404(Tag, slug=slug)
-    recipes = Recipe.objects.filter(tags=tags)
-    paginator = Paginator(recipes, 9)
-    page_number = request.GET.get('page')
-    page = paginator.get_page(page_number)
-
-    return render(
-        request,
-        'index.html',
-        {
-            'page': page,
-            'paginator': paginator
-        }
-    )
+# def tag_recipes(request, slug):
+#     tags = get_object_or_404(Tag, slug=slug)
+#     recipes = Recipe.objects.filter(tags=tags)
+#     paginator = Paginator(recipes, 9)
+#     page_number = request.GET.get('page')
+#     page = paginator.get_page(page_number)
+#
+#     return render(
+#         request,
+#         'index.html',
+#         {
+#             'page': page,
+#             'paginator': paginator
+#         }
+#     )
 
 
 def recipe_detail(request, slug):
@@ -58,7 +65,14 @@ def new_recipe(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    recipes = author.recipes.all()
+    slug = request.GET.get('slug')
+
+    if slug is not None:
+        recipes = author.recipes.filter(slug=slug)
+        print(slug, flush=True)
+    else:
+        recipes = author.recipes.all()
+
     paginator = Paginator(recipes, 9)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -72,3 +86,11 @@ def profile(request, username):
             'author': author
         }
     )
+
+
+def page_not_found(request, exception):
+    return render(request, 'misc/404.html', {'path': request.path}, status=404)
+
+
+def server_error(request):
+    return render(request, 'misc/500.html', status=500)
