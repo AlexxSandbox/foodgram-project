@@ -3,16 +3,17 @@ from django.core.paginator import Paginator
 from django.shortcuts import render, get_object_or_404, redirect
 
 from recipes.forms import RecipeForm
-from recipes.models import Recipe, Tag
+from recipes.models import Recipe
 from users.models import User
 
 
 def recipe_list(request):
-    slug = request.GET.get('slug')
-
-    if slug is not None:
-        tags = get_object_or_404(Tag, slug=slug)
-        recipes = Recipe.objects.filter(draft=False, tags=tags)
+    tag = request.GET.get('tag')
+    if tag is not None:
+        recipes = Recipe.objects.prefetch_related('tags').filter(
+            draft=False,
+            tags__slug=tag
+        )
     else:
         recipes = Recipe.objects.filter(draft=False)
 
@@ -28,23 +29,6 @@ def recipe_list(request):
             'paginator': paginator
         }
     )
-
-
-# def tag_recipes(request, slug):
-#     tags = get_object_or_404(Tag, slug=slug)
-#     recipes = Recipe.objects.filter(tags=tags)
-#     paginator = Paginator(recipes, 9)
-#     page_number = request.GET.get('page')
-#     page = paginator.get_page(page_number)
-#
-#     return render(
-#         request,
-#         'index.html',
-#         {
-#             'page': page,
-#             'paginator': paginator
-#         }
-#     )
 
 
 def recipe_detail(request, slug):
@@ -65,11 +49,10 @@ def new_recipe(request):
 
 def profile(request, username):
     author = get_object_or_404(User, username=username)
-    slug = request.GET.get('slug')
+    tag = request.GET.get('tag')
 
-    if slug is not None:
-        recipes = author.recipes.filter(slug=slug)
-        print(slug, flush=True)
+    if tag is not None:
+        recipes = author.recipes.prefetch_related('tags').filter(tags__slug=tag)
     else:
         recipes = author.recipes.all()
 
