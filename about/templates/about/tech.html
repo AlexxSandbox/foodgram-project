@@ -1,0 +1,47 @@
+{% extends 'base.html' %}
+{% block title %} Технологии {% endblock %}
+{% block style %}
+<link rel="stylesheet" href="/static/pages/single.css">
+{% endblock %}
+{% block content %}
+<main class="main container">
+    <div class="single-card">
+        <img src="/static/images/django.png" class="single-card__image">
+        <div class="single-card__info">
+            <div class="single-card__header-info">
+                <h1 class="single-card__title">About technologies</h1>
+            </div>
+            <div class="single-card__section">
+                <p class=" single-card__section-text" align="justify">
+                    This site it is mine home work on <a href="https://praktikum.yandex.ru/">Yandex.Praktikum.</a> To create this site i spent all my New Year's holidays, studying a lot of new information, doing a lot of tests and errors, drinking a lot of cup of coffee at night, struggling with laziness, fear, and fatigue.
+                    I'm won and made it.
+                    But i know only small bit information about this all and i must continue.
+                    I find all information in official sites, documentations or simple request to google.
+                </p>
+                <p align="right"><strong>
+                    "When it's -45 degrees outside, nothing distracts from the project,<br>
+                    no Christmas tree, no Santa Claus, no bears.
+                    Just an empty vodka glass.<br> Russian winter."</strong>
+                </p>
+            </div>
+            <div class="single-card__section">
+                <h3 class="single-card__section-title">What i used:</h3>
+                <div class="single-card__items single-card__items_column">
+                    <ul>
+                        <li class="single-card__section-text">Python</li>
+                        <li class="single-card__section-text">Django framework</li>
+                        <li class="single-card__section-text">JavaScript</li>
+                        <li class="single-card__section-text">PostgreSQL</li>
+                    </ul>
+                    <ul>
+                        <li class="single-card__section-text">HTML and CSS</li>
+                        <li class="single-card__section-text">Docker and Docker-compose</li>
+                        <li class="single-card__section-text">Gunicorn and Nginx</li>
+                        <li class="single-card__section-text">Git and workflows</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+{% endblock %}
