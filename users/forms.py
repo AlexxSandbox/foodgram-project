@@ -13,5 +13,5 @@ class CreationForm(UserCreationForm):
 
     class Meta(UserCreationForm.Meta):
         model = User
-        fields = ("first_name", "username", "email")
-        required_fields = ("first_name", "username", "email")
+        fields = ('first_name', 'username', 'email')
+        required_fields = ('first_name', 'username', 'email')

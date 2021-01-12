@@ -2,7 +2,7 @@
 {% block title %}Регистрация{% endblock %}
 
 {% load static %}
-{% block static %}
+{% block style %}
 <link rel="stylesheet" href="{% static 'pages/form.css' %}">
 {% endblock %}
 
@@ -15,14 +15,14 @@
     <form class="form" method="post" action="{% url 'signup' %}">
         {% csrf_token %}
         <div class="form__group">
-            <label for="{{ form.first_name.id_for_label }}" class="form__label">Имя</label>
+            <label for="{{ form.first_name.id_for_label }}" class="form__label">Имя пользователя</label>
             <div class="form__field-group">
                 {{ form.first_name|addclass:"form__input" }}
                 <span class="form__error">{{ form.first_name.errors }}</span>
             </div>
         </div>
         <div class="form__group">
-            <label for="{{ form.username.id_for_label }}" class="form__label">Имя пользователя</label>
+            <label for="{{ form.username.id_for_label }}" class="form__label">Логин для сайта</label>
             <div class="form__field-group">
                 {{ form.username|addclass:"form__input" }}
                 <span class="form__error">{{ form.username.errors }}
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="form__group">
-            <label for="{{ form.email.id_for_label }}" class="form__label">Адрес электронной почты</label>
+            <label for="{{ form.email.id_for_label }}" class="form__label">Email</label>
             <div class="form__field-group">
                 {{ form.email|addclass:"form__input" }}
                 <span class="form__error">{{ form.email.errors }}</span>
