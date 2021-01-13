@@ -43,8 +43,6 @@ class Ingredient(models.Model):
 
 
 class Recipe(models.Model):
-    # TODO Add lifehack field
-    # TODO Add points field to cooking stages
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -113,9 +111,10 @@ class RecipeIngredients(models.Model):
         verbose_name='Ингредиент'
     )
 
-    def add_ingredient(self, recipe_id, title, amount):
+    @staticmethod
+    def add_ingredient(recipe_id, title, amount):
         ingredient = get_object_or_404(Ingredient, title=title)
-        return self.objects.get_or_create(
+        return RecipeIngredients.get_or_create(
             recipe_id=recipe_id,
             ingredient=ingredient,
             amount=amount

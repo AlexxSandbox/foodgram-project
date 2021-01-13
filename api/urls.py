@@ -12,7 +12,7 @@ urlpatterns = [
     path('add_subscription/', views.add_subscription, name='add_subscription'),
     path('remove_subscription/<int:following_id>/',
          views.remove_subscription, name='remove_subscription'),
-    path('<username>/<recipe_id>/remove/',
+    path('<str:username>/<int:recipe_id>/remove/',
          views.remove_recipe, name='remove_recipe'),
     path('ingredients/', views.get_ingredients, name='get_ingredients'),
     path('print_cart/', views.get_cart, name='get_cart'),

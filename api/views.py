@@ -1,4 +1,6 @@
 import json
+from collections import defaultdict
+
 from django.shortcuts import redirect
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
@@ -87,18 +89,17 @@ def get_cart(request):
         user_id=user.id).values_list('recipe', flat=True)
     ingredient_filter = RecipeIngredients.objects.filter(
         recipe_id__in=wishlist_filter).order_by('ingredient')
-    ingredients = {}
+    ingredients = defaultdict(int)
     for ingredient in ingredient_filter:
-        if ingredient.ingredient in ingredients.keys():
-            ingredients[ingredient.ingredient] += ingredient.amount
-        else:
-            ingredients[ingredient.ingredient] = ingredient.amount
+        ingredients[ingredient.ingredient] += ingredient.amount
+
+    print(ingredients, flush=True)
 
     wishlist = []
     for k, v in ingredients.items():
         wishlist.append(f'{k.title} - {v} {k.dimension} \n')
     wishlist.append('\n\n\n\n')
-    wishlist.append('foodgram')
+    wishlist.append('Bon Appetite with FOODgram!')
 
     response = HttpResponse(wishlist, 'Content-Type: text/plain')
     response['Content-Disposition'] = 'attachment; filename="wishlist.txt"'

@@ -81,7 +81,7 @@ def feed(request):
     authors = User.objects.filter(
         following__subscriber=user).prefetch_related('recipes')
     paginator = Paginator(authors, 3)
-    page_number = request.GET.get("page")
+    page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
     context = {
         'authors': authors,
@@ -94,16 +94,16 @@ def feed(request):
 @login_required
 def new_recipe(request):
     form_title = 'Создание рецепта'
-    btn_caption = "Создать рецепт"
+    btn_caption = 'Создать рецепт'
     form = RecipeForm(request.POST or None, files=request.FILES or None)
 
-    if request.method == "POST" and form.is_valid():
+    if request.method == 'POST' and form.is_valid():
         ingredients_names = request.POST.getlist('nameIngredient')
         ingredients_values = request.POST.getlist('valueIngredient')
         if len(ingredients_names) == len(ingredients_values):
             count = len(ingredients_names)
         else:
-            return redirect("new")
+            return redirect('new')
         new_recipe = form.save(commit=False)
         new_recipe.author = request.user
         new_recipe.save()
@@ -114,7 +114,7 @@ def new_recipe(request):
                 ingredients_names[i],
                 ingredients_values[i]
             )
-        return redirect("index")
+        return redirect('index')
 
     form = RecipeForm()
     context = {
@@ -127,23 +127,27 @@ def new_recipe(request):
 
 @login_required
 def edit_recipe(request, username, recipe_id):
+    user = get_object_or_404(User, username=username)
+    recipe_redirect = redirect(
+        'recipe',
+        username=user.username,
+        recipe_id=recipe_id
+    )
+    if request.user != user:
+        return recipe_redirect
+
     form_title = 'Редактирование рецепта'
     btn_caption = 'Сохранить'
     recipe = get_object_or_404(Recipe, id=recipe_id)
-    user = get_object_or_404(User, username=username)
-    recipe_redirect = redirect(
-        'recipe', username=user.username, recipe_id=recipe_id)
     is_breakfast = 'breakfast' in recipe.tags
     is_lunch = 'lunch' in recipe.tags
     is_dinner = 'dinner' in recipe.tags
     ingredients = RecipeIngredients.objects.filter(recipe_id=recipe_id)
 
-    if request.user != user:
-        return recipe_redirect
-
     form = RecipeForm(
         request.POST or None,
-        files=request.FILES or None, instance=recipe
+        files=request.FILES or None,
+        instance=recipe
     )
 
     if request.method == 'POST' and form.is_valid():
@@ -200,7 +204,7 @@ def favorites(request):
 
 
 def page_not_found(request, exception):
-    return render(request, 'misc/404.html', {"path": request.path}, status=404)
+    return render(request, 'misc/404.html', {'path': request.path}, status=404)
 
 
 def server_error(request):
