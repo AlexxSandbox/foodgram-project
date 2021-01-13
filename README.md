@@ -19,10 +19,10 @@ What things you need to install the software and how to install them
 * [Install Docker-compose](https://docs.docker.com/compose/install/)
 
 ### How it work
-Generate .env file:
+Generate .env file for PostgreSQL:
 * auto
 ```
-$ sudo ./bin/create_enfile.sh
+$ bash ./bin/create_enfile_db.sh
 ```
 * manual
 ```
@@ -34,6 +34,19 @@ $ POSTGRES_USER=*\<YOURNAME>\*
 $ POSTGRES_PASSWORD=*\<YOURPASSWORD>\*
 $ DB_HOST=db
 $ DB_PORT=5432
+```
+Generate .env file for SMTP (optional - for password reset service):
+* auto and manual edit
+```
+$ bash ./bin/create_enfile_smtp.sh
+```
+* manual
+```
+$ touch .env
+
+$ MAIL_HOST=*\<SMTP HOST>\*
+$ MAIL_USER=*\<EMAIL ACCOUNT>\*
+$ MAIL_PASSWORD=*\<EMAIL PASSWORD>\*
 ```
 Build the new image and spin up the containers:
 ```
