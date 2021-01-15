@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ user.get_full_name}}{% endblock %}
+{% block title %}{{ user.username }}{% endblock %}
 
 {% load static %}
 {% block style %}
@@ -8,7 +8,7 @@
 
 {% block content %}
 <div class="main__header">
-    <h1 class="main__title">{{ author.get_full_name }}</h1>
+    <h1 class="main__title">{% if request.user == author %}Мои рецепты{% else %}{{ author.username }}{% endif %}</h1>
     {% include 'tags.html' %}
 </div>
 

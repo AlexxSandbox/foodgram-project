@@ -31,20 +31,11 @@ class RecipeAdmin(admin.ModelAdmin):
         'tags',
         'author',
         'description',
-        'headshot_image',
         'image',
         'cooking_time'
     )
     search_fields = ('title', 'description', 'author', 'ingredients')
     empty_value_display = '-пусто-'
     inlines = [RecipeIngredientsInstanceInLine]
-    readonly_fields = ('headshot_image',)
     save_on_top = True
 
-    def headshot_image(self, obj):
-        return mark_safe('<img src="{url}" width="{width}" height={height} />'.format(
-            url = obj.image.url,
-            width=200,
-            height=200,
-            )
-        )
