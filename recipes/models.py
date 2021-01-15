@@ -101,15 +101,6 @@ class RecipeIngredients(models.Model):
         verbose_name='Ингредиент'
     )
 
-    @staticmethod
-    def add_ingredient(recipe_id, title, amount):
-        ingredient = get_object_or_404(Ingredient, title=title)
-        return RecipeIngredients.get_or_create(
-            recipe_id=recipe_id,
-            ingredient=ingredient,
-            amount=amount
-        )
-
 
 class Follow(models.Model):
     subscriber = models.ForeignKey(

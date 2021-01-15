@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ user.username }}{% endblock %}
+{% block title %}{% if request.user == author %}Мои рецепты{% else %}{{ author.username }}{% endif %}{% endblock %}
 
 {% load static %}
 {% block style %}

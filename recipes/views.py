@@ -8,9 +8,20 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from recipes.forms import RecipeForm
-from recipes.models import Recipe, TAGS_CHOICES, RecipeIngredients
+from recipes.models import Recipe, TAGS_CHOICES, RecipeIngredients, Ingredient
 
 User = get_user_model()
+
+
+def get_ingredients(request):
+    ingredients = {}
+    for key in request.POST:
+        if key.startswith('nameIngredient'):
+            value_ingredient = key[15:]
+            if value_ingredient.isdecimal():
+                ingredients[request.POST[key]] = request.POST[
+                    'valueIngredient_' + value_ingredient]
+    return ingredients
 
 
 def tag_collect(request):
@@ -94,29 +105,27 @@ def feed(request):
 def new_recipe(request):
     form = RecipeForm(request.POST or None, files=request.FILES or None)
 
-    if request.method == 'POST' and form.is_valid():
-        ingredients_names = request.POST.getlist('nameIngredient')
-        ingredients_values = request.POST.getlist('valueIngredient')
-        if len(ingredients_names) == len(ingredients_values):
-            count = len(ingredients_names)
-        else:
-            return redirect('new')
-        new_recipe = form.save(commit=False)
-        new_recipe.author = request.user
-        new_recipe.save()
-        for i in range(count):
-            RecipeIngredients.add_ingredient(
-                RecipeIngredients,
-                new_recipe.id,
-                ingredients_names[i],
-                ingredients_values[i]
-            )
-        return redirect('index')
+    if request.method == 'POST':
+        ingredients = get_ingredients(request)
+
+        if not ingredients:
+            form.add_error(None, 'Должен быть хоть один ингредиент')
+
+        elif form.is_valid():
+            recipe = form.save(commit=False)
+            recipe.author = request.user
+            recipe.save()
+
+            for title, amount in ingredients.items():
+                ingredient = get_object_or_404(Ingredient, title=title)
+                new_ingredient = RecipeIngredients(amount=amount, ingredient=ingredient, recipe=recipe)
+                new_ingredient.save()
+
+            form.save_m2m()
+            return redirect('index')
 
     form = RecipeForm()
-    context = {
-        'form': form
-    }
+    context = {'form': form}
     return render(request, 'recipes/form_recipe.html', context)
 
 
@@ -144,27 +153,28 @@ def edit_recipe(request, username, recipe_id):
     )
 
     if request.method == 'POST' and form.is_valid():
-        ingredients_names = request.POST.getlist('nameIngredient')
-        ingredients_values = request.POST.getlist('valueIngredient')
-        if len(ingredients_names) == len(ingredients_values):
-            count = len(ingredients_names)
-        else:
-            return redirect('edit_recipe',
-                            username=username, recipe_id=recipe_id)
-        form.save()
-        RecipeIngredients.objects.filter(recipe_id=recipe.id).delete()
-        for i in range(count):
-            RecipeIngredients.add_ingredient(
-                RecipeIngredients,
-                recipe.id,
-                ingredients_names[i],
-                ingredients_values[i]
-            )
+        ingredients = get_ingredients(request)
+        # ingredients_names = request.POST.getlist('nameIngredient')
+        # ingredients_values = request.POST.getlist('valueIngredient')
+        # if len(ingredients_names) == len(ingredients_values):
+        #     count = len(ingredients_names)
+        # else:
+        #     return redirect('edit_recipe',
+        #                     username=username, recipe_id=recipe_id)
+        # form.save()
+        # RecipeIngredients.objects.filter(recipe_id=recipe.id).delete()
+        # for i in range(count):
+        #     RecipeIngredients.add_ingredient(
+        #         RecipeIngredients,
+        #         recipe.id,
+        #         ingredients_names[i],
+        #         ingredients_values[i]
+        #     )
+
+        form.save_m2m()
         return recipe_redirect
 
     context = {
-        'form': form,
-        'recipe': recipe,
         'is_breakfast': is_breakfast,
         'is_lunch': is_lunch,
         'is_dinner': is_dinner,
