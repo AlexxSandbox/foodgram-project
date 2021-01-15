@@ -10,7 +10,6 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('about/', include('about.urls', namespace='about')),
     path('api/v1/', include('api.urls')),
-    path('', include('carts.urls')),
     path('', include('recipes.urls'))
 ]
 

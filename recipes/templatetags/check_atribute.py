@@ -1,7 +1,6 @@
 from django import template
 
-from recipes.models import Favorite, Follow
-from carts.models import Cart
+from recipes.models import Favorite, Follow, Cart
 
 register = template.Library()
 

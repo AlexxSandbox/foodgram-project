@@ -1,6 +1,3 @@
-import os
-import re
-
 from django.contrib.auth import get_user_model
 from django.db import models
 from django.shortcuts import get_object_or_404
@@ -12,13 +9,6 @@ User = get_user_model()
 TAGS_CHOICES = (('breakfast', 'Завтрак'),
                ('lunch', 'Обед'),
                ('dinner', 'Ужин'))
-
-
-def get_upload_path(instance, filename):
-    path = f'{instance.__class__.__name__}/'
-    t = re.search('\.(.+)$', filename).group(1)
-    filename = f'{str(instance.slug)}.{t}'
-    return os.path.join(path, filename)
 
 
 class Ingredient(models.Model):
@@ -64,7 +54,7 @@ class Recipe(models.Model):
         verbose_name='Описание'
     )
     image = models.ImageField(
-        upload_to=get_upload_path,
+        upload_to='recipes/',
         verbose_name='Изображение'
     )
     ingredients = models.ManyToManyField(
@@ -161,3 +151,16 @@ class Favorite(models.Model):
     class Meta:
         verbose_name = 'Избранное'
         verbose_name_plural = 'Избранное'
+
+
+class Cart(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='subscriber_cart'
+    )
+    recipe = models.ForeignKey(
+        Recipe,
+        on_delete=models.CASCADE,
+        related_name='recipe_cart'
+    )

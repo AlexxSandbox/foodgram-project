@@ -202,6 +202,13 @@ def favorites(request):
     return render(request, 'recipes/favorites.html', context)
 
 
+@login_required
+def cart(request):
+    user = request.user
+    recipes = Recipe.objects.filter(recipe_cart__user=user)
+    return render(request, 'recipes/cart.html', {'recipes': recipes})
+
+
 def page_not_found(request, exception):
     return render(request, 'misc/404.html', {'path': request.path}, status=404)
 

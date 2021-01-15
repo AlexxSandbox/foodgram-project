@@ -5,8 +5,7 @@ from django.shortcuts import redirect
 from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 
-from recipes.models import Recipe, Ingredient,RecipeIngredients, Favorite, Follow
-from carts.models import Cart
+from recipes.models import Recipe, Ingredient,RecipeIngredients, Favorite, Follow, Cart
 
 
 SUCCESS_RESPONSE = JsonResponse({'success': True})
