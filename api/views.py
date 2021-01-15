@@ -16,6 +16,7 @@ FAIL_RESPONSE = HttpResponse()
 def add_favorite(request):
     body = json.loads(request.body)
     recipe_id = int(body['id'])
+    # recipe_id = request.POST.get('id')
     user = request.user
     _, created = Favorite.objects.get_or_create(
         user_id=user.id, recipe_id=recipe_id)

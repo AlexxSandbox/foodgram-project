@@ -63,9 +63,9 @@ def user_page(request, username):
 
 
 def recipe_page(request, username, recipe_id):
-    author = get_object_or_404(User, username=username)
-    recipe = get_object_or_404(Recipe, id=recipe_id, author_id=author.id)
-    ingredients = RecipeIngredients.objects.filter(recipe_id=recipe_id)
+    recipe = get_object_or_404(Recipe, id=recipe_id, author__username=username)
+    author = recipe.author
+    ingredients = recipe.recipeingredients_set.all()
     context = {
         'recipe': recipe,
         'ingredients': ingredients,
@@ -92,8 +92,6 @@ def feed(request):
 
 @login_required
 def new_recipe(request):
-    form_title = 'Создание рецепта'
-    btn_caption = 'Создать рецепт'
     form = RecipeForm(request.POST or None, files=request.FILES or None)
 
     if request.method == 'POST' and form.is_valid():
@@ -117,8 +115,6 @@ def new_recipe(request):
 
     form = RecipeForm()
     context = {
-        'form_title': form_title,
-        'btn_caption': btn_caption,
         'form': form
     }
     return render(request, 'recipes/form_recipe.html', context)
@@ -135,8 +131,6 @@ def edit_recipe(request, username, recipe_id):
     if request.user != user:
         return recipe_redirect
 
-    form_title = 'Редактирование рецепта'
-    btn_caption = 'Сохранить'
     recipe = get_object_or_404(Recipe, id=recipe_id)
     is_breakfast = 'breakfast' in recipe.tags
     is_lunch = 'lunch' in recipe.tags
@@ -169,8 +163,6 @@ def edit_recipe(request, username, recipe_id):
         return recipe_redirect
 
     context = {
-        'form_title': form_title,
-        'btn_caption': btn_caption,
         'form': form,
         'recipe': recipe,
         'is_breakfast': is_breakfast,

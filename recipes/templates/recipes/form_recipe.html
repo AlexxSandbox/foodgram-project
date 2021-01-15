@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% block title %}{{ form_title }}{% endblock %}
+{% block title %}{% if 'new' in request.path %}Создать рецепт{% else %}Редактировать рецепт{% endif %}{% endblock %}
 
 {% load static %}
 {% block style %}
@@ -9,7 +9,7 @@
 {% block content %}
 {% load add_class %}
 <div class="main__header">
-    <h1 class="main__title">{{ form_title }}</h1>
+    <h1 class="main__title">{% if 'new' in request.path %}Создать рецепт{% else %}Редактировать рецепт{% endif %}</h1>
 </div>
 <div class="form-container">
     <form class="form" method="post" enctype="multipart/form-data">
@@ -104,7 +104,7 @@
             </div>
         </div>
         <div class="form__footer">
-            <button class="button button_style_blue">{{ btn_caption }}</button> 
+            <button class="button button_style_blue">{% if 'new' in request.path %}Создать рецепт{% else %}Сохранить{% endif %}</button>
             {% if recipe %}
                 <a style="margin-left: 2.5em" href="{% url 'remove_recipe' recipe.author.username recipe.id %}" class="form__ingredient-link">Удалить</a>
             {% endif %}
