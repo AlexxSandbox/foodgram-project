@@ -118,7 +118,11 @@ def new_recipe(request):
 
             for title, amount in ingredients.items():
                 ingredient = get_object_or_404(Ingredient, title=title)
-                new_ingredient = RecipeIngredients(amount=amount, ingredient=ingredient, recipe=recipe)
+                new_ingredient = RecipeIngredients(
+                    amount=amount,
+                    ingredient=ingredient,
+                    recipe=recipe
+                )
                 new_ingredient.save()
 
             form.save_m2m()
@@ -131,16 +135,12 @@ def new_recipe(request):
 
 @login_required
 def edit_recipe(request, username, recipe_id):
-    user = get_object_or_404(User, username=username)
-    recipe_redirect = redirect(
-        'recipe',
-        username=user.username,
-        recipe_id=recipe_id
-    )
-    if request.user != user:
+    recipe = get_object_or_404(Recipe, id=recipe_id, author__username=username)
+    recipe_redirect = redirect('recipe', username=username, recipe_id=recipe_id)
+
+    if request.user != recipe.author:
         return recipe_redirect
 
-    recipe = get_object_or_404(Recipe, id=recipe_id)
     is_breakfast = 'breakfast' in recipe.tags
     is_lunch = 'lunch' in recipe.tags
     is_dinner = 'dinner' in recipe.tags
@@ -151,30 +151,22 @@ def edit_recipe(request, username, recipe_id):
         files=request.FILES or None,
         instance=recipe
     )
-
-    if request.method == 'POST' and form.is_valid():
-        ingredients = get_ingredients(request)
-        # ingredients_names = request.POST.getlist('nameIngredient')
-        # ingredients_values = request.POST.getlist('valueIngredient')
-        # if len(ingredients_names) == len(ingredients_values):
-        #     count = len(ingredients_names)
-        # else:
-        #     return redirect('edit_recipe',
-        #                     username=username, recipe_id=recipe_id)
-        # form.save()
-        # RecipeIngredients.objects.filter(recipe_id=recipe.id).delete()
-        # for i in range(count):
-        #     RecipeIngredients.add_ingredient(
-        #         RecipeIngredients,
-        #         recipe.id,
-        #         ingredients_names[i],
-        #         ingredients_values[i]
-        #     )
-
-        form.save_m2m()
+    if form.is_valid():
+        recipe.save()
+        new_ingredients = get_ingredients(request)
+        for title, amount in new_ingredients.items():
+            ingredient = get_object_or_404(Ingredient, title=title)
+            new_ingredient = RecipeIngredients(
+                amount=amount,
+                ingredient=ingredient,
+                recipe=recipe
+            )
+            new_ingredient.save()
         return recipe_redirect
 
     context = {
+        'form': form,
+        'recipe': recipe,
         'is_breakfast': is_breakfast,
         'is_lunch': is_lunch,
         'is_dinner': is_dinner,
