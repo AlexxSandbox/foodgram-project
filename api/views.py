@@ -2,10 +2,11 @@ import json
 from collections import defaultdict
 
 from django.shortcuts import redirect
-from django.http import JsonResponse, HttpResponse
+from django.http import JsonResponse, HttpResponse, QueryDict
 from django.views.decorators.http import require_http_methods
 
-from recipes.models import Recipe, Ingredient,RecipeIngredients, Favorite, Follow, Cart
+from recipes.models import (Recipe, Ingredient, RecipeIngredients,
+                            Favorite, Follow, Cart)
 
 
 SUCCESS_RESPONSE = JsonResponse({'success': True})
@@ -91,8 +92,6 @@ def get_cart(request):
     ingredients = defaultdict(int)
     for ingredient in ingredient_filter:
         ingredients[ingredient.ingredient] += ingredient.amount
-
-    print(ingredients, flush=True)
 
     wishlist = []
     for k, v in ingredients.items():

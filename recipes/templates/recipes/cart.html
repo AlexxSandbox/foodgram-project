@@ -10,7 +10,6 @@
 <div class="main__header">
     <h1 class="main__title">Список покупок</h1>
 </div>
-
 {% csrf_token %}
 <div class="card-list card-list_column">
     <ul class="shopping-list">
@@ -28,7 +27,7 @@
             </li>
         {% endfor %}
     </ul>
-    {% if recipes|length > 0 %}
+    {% if recipes %}
         <a class="button button_style_light-blue" href="{% url 'get_cart' %}">Скачать список</a>
     {% endif %}
 </div>

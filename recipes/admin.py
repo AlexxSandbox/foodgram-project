@@ -1,12 +1,11 @@
 from django.contrib import admin
-from django.utils.safestring import mark_safe
 
 from recipes.models import Ingredient, Recipe, RecipeIngredients
 
 
-admin.site.site_header = "FOODgram Admin"
-admin.site.site_title = "FOODgram Admin Portal"
-admin.site.index_title = "Welcome to most delicious portal - FOODgram"
+admin.site.site_header = 'FOODgram Admin'
+admin.site.site_title = 'FOODgram Admin Portal'
+admin.site.index_title = 'Welcome to most delicious portal - FOODgram'
 
 
 class RecipeIngredientsInstanceInLine(admin.TabularInline):
@@ -38,4 +37,3 @@ class RecipeAdmin(admin.ModelAdmin):
     empty_value_display = '-пусто-'
     inlines = [RecipeIngredientsInstanceInLine]
     save_on_top = True
-
