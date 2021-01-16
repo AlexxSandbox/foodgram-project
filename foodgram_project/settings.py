@@ -124,10 +124,10 @@ LOGIN_URL = 'auth/login/'
 LOGIN_REDIRECT_URL = 'index'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = os.environ.get('MAIL_HOST')
-EMAIL_HOST_USER = os.environ.get('MAIL_USER')
-EMAIL_HOST_PASSWORD = os.environ.get('MAIL_PASSWORD')
-EMAIL_PORT = int(os.environ.get('MAIL_PORT'))
+EMAIL_HOST = ''
+EMAIL_HOST_USER = ''
+EMAIL_HOST_PASSWORD = ''
+EMAIL_PORT = ''
 EMAIL_USE_TLS = True
 
 SERVER_EMAIL = EMAIL_HOST_USER
