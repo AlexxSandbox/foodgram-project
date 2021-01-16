@@ -1,9 +1,9 @@
 # "FOODgram" - food assistant
 
-![CI Status](https://github.com/AlexxSandbox/foodgram-project/workflows/YaMDB%20api%20workflow/badge.svg)
+![CI Status](https://github.com/AlexxSandbox/foodgram-project/workflows/foodgram%20workflow/badge.svg)
 ![Top language](https://img.shields.io/github/languages/top/AlexxSandbox/foodgram-project)
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlexxSandbox/foodgram-project)
-![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/alexxdockerhub/foodgram-project)
+![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/alexxdockerhub/foodgram)
 
 An online service where users can publish recipes, subscribe to publications of other users, add recipes they like to the Favorites list, and download a summary list of products needed to prepare one or more selected dishes before going to the store.
 
