@@ -60,7 +60,7 @@ jobs:
           username: ${{ secrets.USER }}
           key: ${{ secrets.KEY }}
           passphrase: ${{ secrets.PASSPHRASE }}
-          source: "./docker-compose.yaml, ./.env, ./nginx/default.conf"
+          source: "./docker-compose.yaml, ./nginx/default.conf"
           target: "./foodgram/"
 
   deploy:
