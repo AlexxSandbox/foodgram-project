@@ -6,9 +6,11 @@ from pytils.translit import slugify
 
 User = get_user_model()
 
-TAGS_CHOICES = (('breakfast', 'Завтрак'),
-               ('lunch', 'Обед'),
-               ('dinner', 'Ужин'))
+TAGS_CHOICES = (
+    ('breakfast', 'Завтрак'),
+    ('lunch', 'Обед'),
+    ('dinner', 'Ужин')
+)
 
 
 class Ingredient(models.Model):

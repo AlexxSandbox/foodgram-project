@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from recipes.forms import RecipeForm
-from recipes.models import Recipe, TAGS_CHOICES, RecipeIngredients, Ingredient
+from recipes.models import Recipe, TAGS_CHOICES, RecipeIngredients
 
 User = get_user_model()
 

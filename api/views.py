@@ -2,7 +2,7 @@ import json
 from collections import defaultdict
 
 from django.shortcuts import redirect
-from django.http import JsonResponse, HttpResponse, QueryDict
+from django.http import JsonResponse, HttpResponse
 from django.views.decorators.http import require_http_methods
 
 from recipes.models import (Recipe, Ingredient, RecipeIngredients,
