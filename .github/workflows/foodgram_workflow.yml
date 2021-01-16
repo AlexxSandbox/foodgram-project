@@ -22,9 +22,6 @@ jobs:
       - name: Lint with flake8
         run: flake8 --ignore=F403,F405,E501,W504 .
 
-      - name: Test with pytest
-        run: pytest
-
   build_and_push_to_docker_hub:
     name: Push Docker image to Docker Hub
     if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/main'
