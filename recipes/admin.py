@@ -16,8 +16,8 @@ class RecipeIngredientsInstanceInLine(admin.TabularInline):
 @admin.register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = ('title',)
-    fields = ('title', 'description', 'dimension')
-    search_fields = ('title', 'description')
+    fields = ('title', 'dimension')
+    search_fields = ('title',)
     empty_value_display = '-пусто-'
     save_on_top = True
 

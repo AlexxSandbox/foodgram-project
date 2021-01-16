@@ -11,12 +11,7 @@ TAGS_CHOICES = (('breakfast', 'Завтрак'),
 
 
 class Ingredient(models.Model):
-    title = models.CharField('Ингредиент', max_length=150, unique=True)
-    description = models.TextField(
-        'Описание ингредиента',
-        blank=True,
-        default=''
-    )
+    title = models.CharField('Ингредиент', max_length=250, unique=True)
     dimension = models.CharField(
         max_length=25,
         verbose_name='Единица измерения'
@@ -28,7 +23,7 @@ class Ingredient(models.Model):
         ordering = ['title', ]
 
     def __str__(self):
-        return f"{self.title} / {self.dimension}"
+        return f'{self.title} / {self.dimension}'
 
 
 class Recipe(models.Model):
