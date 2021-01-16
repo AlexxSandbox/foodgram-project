@@ -19,12 +19,7 @@ What things you need to install the software and how to install them
 * [Install Docker-compose](https://docs.docker.com/compose/install/)
 
 ### How it work
-Generate .env file for PostgreSQL:
-* auto
-```
-$ bash ./bin/create_enfile_db.sh
-```
-* manual
+Create .env file:
 ```
 $ touch .env
 
@@ -34,47 +29,26 @@ $ POSTGRES_USER=*\<YOURNAME>\*
 $ POSTGRES_PASSWORD=*\<YOURPASSWORD>\*
 $ DB_HOST=db
 $ DB_PORT=5432
-```
-Generate .env file for SMTP (optional - for password reset service):
-* auto and manual edit
-```
-$ bash ./bin/create_enfile_smtp.sh
-```
-* manual
-```
-$ touch .env
-
-$ MAIL_HOST=*\<SMTP HOST>\*
-$ MAIL_USER=*\<EMAIL ACCOUNT>\*
-$ MAIL_PASSWORD=*\<EMAIL PASSWORD>\*
+$ EMAIL_HOST=*\<YOURHOST>\*
+$ EMAIL_USER=*\<YOURNAME>\*
+$ EMAIL_PASSWORD=*\<YOURPASSWORD>\*
 ```
 Build the new image and spin up the containers:
 ```
 $ sudo docker-compose up -d --build
 ```
-or
-```
-$ make dev
-```
-Create migrations:
-```
-$ make makemigrations
-```
-```
-$ make migrate
-```
 Create superuser for Django admin:
 ```
-$ make exec
+$ docker container exec -it APIDOCKER bash
 $ python manage.py createsuperuser
 $ ...
 ```
 Ready!
-Run browser and get Token [localhost/api/v1/auth/token](https://localhost:8000/api/v1/auth/token/)
+Run browser and Bon Appetit [localhost](https://localhost/)
 
 *To stop and remove containers, networks run:
 ```
-$ make down
+$ sudo docker-compose down
 ```
 
 ## Built With
@@ -85,7 +59,7 @@ $ make down
 * [PostgreSQL](https://hub.docker.com/_/postgres) - The open source object-relation database
 * [Gunicorn](https://gunicorn.org/) - Puthon WSGI HTTP Server  for Unix
 * [nginx](https://hub.docker.com/_/nginx) - Nginx (pronounced "engine-x") is an open source reverse proxy server for HTTP, HTTPS, SMTP, POP3, and IMAP protocols, as well as a load balancer, HTTP cache, and a web server (origin server).
-* [yamdb_api](https://hub.docker.com/r/alexxdockerhub/yamdb) - API service for movie reviews.
+* [foodgram](https://hub.docker.com/r/alexxdockerhub/foodgram-project) - API service for movie reviews.
 
 ## Contributing
 
