@@ -1,5 +1,6 @@
 from django.contrib.auth import get_user_model
 from django.db import models
+from django.shortcuts import get_object_or_404
 from multiselectfield import MultiSelectField
 from pytils.translit import slugify
 
@@ -44,7 +45,7 @@ class Recipe(models.Model):
     )
     description = models.TextField(
         blank=True,
-        null=True,
+        default='',
         verbose_name='Описание'
     )
     image = models.ImageField(
@@ -94,6 +95,15 @@ class RecipeIngredients(models.Model):
         on_delete=models.CASCADE,
         verbose_name='Ингредиент'
     )
+
+    @staticmethod
+    def add_ingredient(recipe, title, amount):
+        ingredient = get_object_or_404(Ingredient, title=title)
+        return RecipeIngredients.objects.get_or_create(
+            recipe=recipe,
+            ingredient=ingredient,
+            amount=amount
+        )
 
 
 class Follow(models.Model):

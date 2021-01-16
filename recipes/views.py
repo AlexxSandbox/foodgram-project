@@ -15,25 +15,26 @@ User = get_user_model()
 
 def get_ingredients(request):
     ingredients = {}
-    for key in request.POST:
-        if key.startswith('nameIngredient'):
-            value_ingredient = key[15:]
-            if value_ingredient.isdecimal():
-                ingredients[request.POST[key]] = request.POST[
-                    'valueIngredient_' + value_ingredient]
+    for key, value in request.POST.items():
+        if key.startswith('nameIngredient_'):
+            arg = key.split('_')[1]
+            title = value
+            amount = request.POST['valueIngredient_' + arg]
+            ingredients[title] = amount
+        continue
     return ingredients
 
 
 def tag_collect(request):
     tags = []
+    tags_filter = None
     for label, _ in TAGS_CHOICES:
         if request.GET.get(label, ''):
             tags.append(label)
     if tags:
         tags_filter = reduce(
             operator.or_, (Q(tags__contains=tag)for tag in tags))
-        return tags, tags_filter
-    return tags, None
+    return tags, tags_filter
 
 
 def index(request):
@@ -115,17 +116,8 @@ def new_recipe(request):
             recipe = form.save(commit=False)
             recipe.author = request.user
             recipe.save()
-
             for title, amount in ingredients.items():
-                ingredient = get_object_or_404(Ingredient, title=title)
-                new_ingredient = RecipeIngredients(
-                    amount=amount,
-                    ingredient=ingredient,
-                    recipe=recipe
-                )
-                new_ingredient.save()
-
-            form.save_m2m()
+                RecipeIngredients.add_ingredient(recipe, title, amount)
             return redirect('index')
 
     form = RecipeForm()
@@ -152,16 +144,13 @@ def edit_recipe(request, username, recipe_id):
         instance=recipe
     )
     if form.is_valid():
-        recipe.save()
         new_ingredients = get_ingredients(request)
+        RecipeIngredients.objects.filter(recipe_id=recipe).delete()
+        recipe = form.save(commit=False)
+        recipe.author = request.user
+        form.save()
         for title, amount in new_ingredients.items():
-            ingredient = get_object_or_404(Ingredient, title=title)
-            new_ingredient = RecipeIngredients(
-                amount=amount,
-                ingredient=ingredient,
-                recipe=recipe
-            )
-            new_ingredient.save()
+            RecipeIngredients.add_ingredient(recipe, title, amount)
         return recipe_redirect
 
     context = {
