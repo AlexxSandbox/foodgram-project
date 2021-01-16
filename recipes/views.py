@@ -35,7 +35,7 @@ def tag_collect(request):
         tags_filter = reduce(
             operator.or_, (Q(tags__contains=tag)for tag in tags))
     return tags, tags_filter
-home
+
 
 def index(request):
     tags, tags_filter = tag_collect(request)
