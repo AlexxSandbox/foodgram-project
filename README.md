@@ -1,6 +1,6 @@
 # "FOODgram" - food assistant
 
-![CI Status](https://github.com/AlexxSandbox/foodgram-project/workflows/foodgram%20workflow/badge.svg)
+![CI Status](https://github.com/AlexxSandbox/foodgram-project/workflows/FOODgram%20workflow/badge.svg)
 ![Top language](https://img.shields.io/github/languages/top/AlexxSandbox/foodgram-project)
 ![GitHub last commit](https://img.shields.io/github/last-commit/AlexxSandbox/foodgram-project)
 ![Docker Image Size (latest semver)](https://img.shields.io/docker/image-size/alexxdockerhub/foodgram)
