@@ -9,7 +9,6 @@ __pycache__/
 # Distribution / packaging
 .Python
 .idea
-.env.*
 media/
 build/
 develop-eggs/
@@ -105,7 +104,6 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
