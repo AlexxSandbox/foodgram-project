@@ -99,8 +99,9 @@ class RecipeIngredients(models.Model):
     )
 
     @staticmethod
-    def add_ingredient(recipe, title, amount):
+    def add_ingredient(recipe_id, title, amount):
         ingredient = get_object_or_404(Ingredient, title=title)
+        recipe = get_object_or_404(Recipe, id=recipe_id)
         return RecipeIngredients.objects.get_or_create(
             recipe=recipe,
             ingredient=ingredient,

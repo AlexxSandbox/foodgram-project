@@ -21,7 +21,6 @@ def get_ingredients(request):
             title = value
             amount = request.POST['valueIngredient_' + arg]
             ingredients[title] = amount
-        continue
     return ingredients
 
 
@@ -117,7 +116,7 @@ def new_recipe(request):
             recipe.author = request.user
             recipe.save()
             for title, amount in ingredients.items():
-                RecipeIngredients.add_ingredient(recipe, title, amount)
+                RecipeIngredients.add_ingredient(recipe.id, title, amount)
             return redirect('index')
 
     form = RecipeForm()
@@ -136,7 +135,7 @@ def edit_recipe(request, username, recipe_id):
     is_breakfast = 'breakfast' in recipe.tags
     is_lunch = 'lunch' in recipe.tags
     is_dinner = 'dinner' in recipe.tags
-    ingredients = RecipeIngredients.objects.filter(recipe_id=recipe_id)
+    ingredients = RecipeIngredients.objects.filter(recipe=recipe)
 
     form = RecipeForm(
         request.POST or None,
@@ -144,13 +143,12 @@ def edit_recipe(request, username, recipe_id):
         instance=recipe
     )
     if form.is_valid():
-        new_ingredients = get_ingredients(request)
-        RecipeIngredients.objects.filter(recipe_id=recipe).delete()
-        recipe = form.save(commit=False)
-        recipe.author = request.user
         form.save()
+        RecipeIngredients.objects.filter(recipe=recipe).delete()
+
+        new_ingredients = get_ingredients(request)
         for title, amount in new_ingredients.items():
-            RecipeIngredients.add_ingredient(recipe, title, amount)
+            RecipeIngredients.add_ingredient(recipe.id, title, amount)
         return recipe_redirect
 
     context = {
