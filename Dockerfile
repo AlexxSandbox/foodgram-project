@@ -1,5 +1,5 @@
 FROM python:3.8.5
-LABEL description="Foodgram project" author="A.Sergeev"
+LABEL description="Foodgram-project" author="A.Sergeev"
 WORKDIR /code
 ENV PYTHONDONTWRITEBYTECODE 1
 ENV PYTHONBUFFERED 1

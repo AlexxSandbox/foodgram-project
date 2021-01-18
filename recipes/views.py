@@ -16,11 +16,12 @@ User = get_user_model()
 def get_ingredients(request):
     ingredients = {}
     for key, value in request.POST.items():
-        if key.startswith('nameIngredient_'):
-            arg = key.split('_')[1]
-            title = value
-            amount = request.POST['valueIngredient_' + arg]
-            ingredients[title] = amount
+        if not key.startswith('nameIngredient_'):
+            continue
+        arg = key.split('_')[1]
+        title = value
+        amount = request.POST['valueIngredient_' + arg]
+        ingredients[title] = amount
     return ingredients
 
 

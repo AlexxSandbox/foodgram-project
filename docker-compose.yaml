@@ -8,14 +8,14 @@ volumes:
 services:
   db:
     image: postgres:12.4-alpine
-    container_name: POSTGRESQLDOCKER
+    container_name: DB
     volumes:
       - postgres_data:/var/lib/postgresql/data/
     env_file:
       - ./.env
   web:
     image: alexxdockerhub/foodgram:latest
-    container_name: APIDOCKER
+    container_name: WEB
     restart: always
     command: /bin/bash ./bin/dev.sh
     volumes:
@@ -27,7 +27,7 @@ services:
       - ./.env
   nginx:
       image: nginx:1.19.3
-      container_name: APINGINX
+      container_name: NGINX
       ports:
         - "80:80"
       volumes:
