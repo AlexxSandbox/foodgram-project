@@ -11,9 +11,9 @@ def set_tags(request, tags, value):
     elif value in tags:
         for tag in tags:
             if tag != value:
-                request_object[tag] = "tag"
+                request_object[tag] = value
     else:
-        request_object[value] = "tag"
+        request_object[value] = value
 
     return request_object.urlencode()
 

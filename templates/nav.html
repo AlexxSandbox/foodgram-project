@@ -12,7 +12,10 @@
             <li class="nav__item {% if request.path  == favorites %}nav__item_active{% endif %}"><a href="{% url 'favorites' %}" class="nav__link link">Избранное</a></li>
             {% url 'wishlist' as wishlist %}
             {% load wishlist_count %}
-            <li class="nav__item {% if request.path  == wishlist %}nav__item_active{% endif %}"><a href="{% url 'cart' %}" class="nav__link link">Список покупок</a> <span class="badge badge_style_blue nav__badge" id="counter">{% if wishlist_count %}{{ request.user|wishlist_count }}{% endif %}</span></li>
+            <li class="nav__item {% if request.path  == wishlist %}nav__item_active{% endif %}">
+                <a href="{% url 'cart' %}" class="nav__link link">Список покупок</a>
+                <span class="badge badge_style_blue nav__badge" id="counter">{% if request.user|wishlist_count > 0 %}{{ request.user|wishlist_count }}{% endif %}</span>
+            </li>
         </ul>
         <ul class="nav__items list">
             <li class="nav__item"><a href="{% url 'password_change' %}" class="nav__link link">Изменить пароль</a></li>
