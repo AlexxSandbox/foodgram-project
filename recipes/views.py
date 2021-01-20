@@ -33,7 +33,7 @@ def tag_collect(request):
             tags.append(label)
     if tags:
         tags_filter = reduce(
-            operator.or_, (Q(tags__contains=tag)for tag in tags))
+            operator.or_, (Q(tags__contains=tag) for tag in tags))
     return tags, tags_filter
 
 
@@ -42,7 +42,7 @@ def index(request):
     if tags_filter:
         recipes = Recipe.objects.filter(tags_filter).all()
     else:
-        recipes = Recipe.objects.all()
+        recipes = Recipe.objects.all().order_by('-pub_date')
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)
@@ -59,7 +59,7 @@ def user_page(request, username):
     tags, tags_filter = tag_collect(request)
     if tags_filter:
         recipes = Recipe.objects.filter(tags_filter).filter(
-            author_id=author.id).all()
+            author_id=author.id).order_by('-pub_date')
     else:
         recipes = Recipe.objects.filter(author_id=author.id)
     paginator = Paginator(recipes, 6)
@@ -128,7 +128,8 @@ def new_recipe(request):
 @login_required
 def edit_recipe(request, username, recipe_id):
     recipe = get_object_or_404(Recipe, id=recipe_id, author__username=username)
-    recipe_redirect = redirect('recipe', username=username, recipe_id=recipe_id)
+    recipe_redirect = redirect('recipe', username=username,
+                               recipe_id=recipe_id)
 
     if request.user != recipe.author:
         return recipe_redirect
@@ -169,10 +170,10 @@ def favorites(request):
     tags, tags_filter = tag_collect(request)
     if tags_filter:
         recipes = Recipe.objects.filter(tags_filter).filter(
-            favorite_recipe__user=user).all()
+            favorite_recipe__user=user).all().order_by('-pub_date')
     else:
         recipes = Recipe.objects.filter(
-            favorite_recipe__user=user).all()
+            favorite_recipe__user=user).all().order_by('-pub_date')
     paginator = Paginator(recipes, 6)
     page_number = request.GET.get('page')
     page = paginator.get_page(page_number)

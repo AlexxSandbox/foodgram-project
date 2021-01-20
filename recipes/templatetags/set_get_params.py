@@ -21,5 +21,5 @@ def set_tags(request, tags, value):
 @register.simple_tag
 def set_page(request, value):
     request_object = request.GET.copy()
-    request_object["page"] = value
+    request_object['page'] = value
     return request_object.urlencode()
