@@ -4,17 +4,15 @@ register = template.Library()
 
 
 @register.simple_tag
-def set_tags(request, tags, value):
+def set_tags(request, value):
     request_object = request.GET.copy()
-    if request.GET.get(value):
-        request_object.pop(value)
-    elif value in tags:
-        for tag in tags:
-            if tag != value:
-                request_object[tag] = value
+    tags = request_object.getlist('tag')
+    if value in tags:
+        tags.remove(value)
+        request_object.setlist('tag', tags)
     else:
-        request_object[value] = value
-
+        tags.append(value)
+        request_object.setlist('tag', tags)
     return request_object.urlencode()
 
 

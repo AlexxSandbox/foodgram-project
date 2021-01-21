@@ -28,12 +28,12 @@ def get_ingredients(request):
 def tag_collect(request):
     tags = []
     tags_filter = None
-    for label, _ in TAGS_CHOICES:
-        if request.GET.get(label, ''):
-            tags.append(label)
+    if request.GET.getlist('tag'):
+        tags = request.GET.getlist('tag')
     if tags:
         tags_filter = reduce(
             operator.or_, (Q(tags__contains=tag) for tag in tags))
+    tags = request.GET.getlist('tag')
     return tags, tags_filter
 
 
