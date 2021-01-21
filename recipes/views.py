@@ -8,7 +8,7 @@ from django.db.models import Q
 from django.shortcuts import render, get_object_or_404, redirect
 
 from recipes.forms import RecipeForm
-from recipes.models import Recipe, TAGS_CHOICES, RecipeIngredients
+from recipes.models import Recipe, RecipeIngredients
 
 User = get_user_model()
 
@@ -28,12 +28,12 @@ def get_ingredients(request):
 def tag_collect(request):
     tags = []
     tags_filter = None
-    for label, _ in TAGS_CHOICES:
-        if request.GET.get(label, ''):
-            tags.append(label)
+    if request.GET.getlist('tag'):
+        tags = request.GET.getlist('tag')
     if tags:
         tags_filter = reduce(
             operator.or_, (Q(tags__contains=tag) for tag in tags))
+    tags = request.GET.getlist('tag')
     return tags, tags_filter
 
 

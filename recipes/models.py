@@ -61,8 +61,6 @@ class Recipe(models.Model):
     )
     tags = MultiSelectField(
         choices=TAGS_CHOICES,
-        blank=True,
-        null=True,
         verbose_name='Теги'
     )
     cooking_time = models.PositiveSmallIntegerField(

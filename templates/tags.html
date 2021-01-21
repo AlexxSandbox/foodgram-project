@@ -2,26 +2,26 @@
     {% load set_get_params %}
     <li class="tags__item">
         {% if "breakfast" in tags %}
-            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active" href="?{% set_tags request tags 'breakfast' %}"></a>
+            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox_active" href="?{% set_tags request 'breakfast' %}"></a>
         {% else %}
-            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox" href="?{% set_tags request tags 'breakfast' %}"></a>
+            <a id="breakfast" class="tags__checkbox tags__checkbox_style_orange tags__checkbox" href="?{% set_tags request 'breakfast' %}"></a>
         {% endif %}
-            <a class="card__title link" href="?{% set_tags request tags 'breakfast' %}"><span class="tags__label">Завтрак</span></a>
+            <a class="card__title link" href="?{% set_tags request 'breakfast' %}"><span class="tags__label">Завтрак</span></a>
     </li>
     <li class="tags__item">
         {% if "lunch" in tags %}
-            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox_active" href="?{% set_tags request tags 'lunch' %}"></a>
+            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox_active" href="?{% set_tags request 'lunch' %}"></a>
         {% else %}
-            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox" href="?{% set_tags request tags 'lunch' %}"></a>
+            <a id="lunch" class="tags__checkbox tags__checkbox_style_green tags__checkbox" href="?{% set_tags request 'lunch' %}"></a>
         {% endif %}
-            <a class="card__title link" href="?{% set_tags request tags 'lunch' %}"><span for="lunch" class="tags__label">Обед</span></a>
+            <a class="card__title link" href="?{% set_tags request 'lunch' %}"><span for="lunch" class="tags__label">Обед</span></a>
     </li>
     <li class="tags__item">
         {% if "dinner" in tags %}
-            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox_active" href="?{% set_tags request tags 'dinner' %}"></a>
+            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox_active" href="?{% set_tags request 'dinner' %}"></a>
         {% else %}
-            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox" href="?{% set_tags request tags 'dinner' %}"></a>
+            <a id="dinner" class="tags__checkbox tags__checkbox_style_purple tags__checkbox" href="?{% set_tags request 'dinner' %}"></a>
         {% endif %}
-            <a class="card__title link" href="?{% set_tags request tags 'dinner' %}"><span for="dinner" class="tags__label">Ужин</span></a>
+            <a class="card__title link" href="?{% set_tags request 'dinner' %}"><span for="dinner" class="tags__label">Ужин</span></a>
     </li>
 </ul>
