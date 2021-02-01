@@ -44,7 +44,7 @@ $ python manage.py createsuperuser
 $ ...
 ```
 Ready!
-Run browser and Bon Appetit. [Push this link](http://84.201.172.218/).
+Run browser with your server url and Bon Appetit.
 
 *To stop and remove containers, networks run:
 ```
